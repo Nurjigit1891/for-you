@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Для Элизы</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Montserrat:wght@300;400&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --rose: #c8707a;
+    --rose-light: #f2d4d7;
+    --rose-dark: #8b3a42;
+    --cream: #fdf6f0;
+    --gold: #c9a96e;
+    --text-dark: #3a2a2e;
+    --text-mid: #7a5a60;
+  }
+
+  body {
+    font-family: 'Montserrat', sans-serif;
+    background: var(--cream);
+    min-height: 100vh;
+    overflow-x: hidden;
+    color: var(--text-dark);
+  }
+
+  /* ─── PETALS ─── */
+  .petals-bg {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+  }
+  .petal {
+    position: absolute;
+    top: -60px;
+    width: 12px; height: 18px;
+    background: var(--rose-light);
+    border-radius: 50% 0 50% 0;
+    opacity: 0;
+    animation: fall linear infinite;
+  }
+  @keyframes fall {
+    0%   { transform: translateY(0) rotate(0deg) translateX(0); opacity: 0; }
+    10%  { opacity: 0.7; }
+    90%  { opacity: 0.5; }
+    100% { transform: translateY(110vh) rotate(720deg) translateX(80px); opacity: 0; }
+  }
+
+  /* ─── PAGES ─── */
+  .page {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 0.8s ease, transform 0.8s ease;
+    z-index: 10;
+  }
+  .page.hidden {
+    opacity: 0;
+    pointer-events: none;
+    transform: scale(0.97);
+  }
+
+  /* ─── LANDING PAGE ─── */
+  #landing {
+    text-align: center;
+    gap: 2.5rem;
+  }
+
+  .landing-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2.2rem, 6vw, 4rem);
+    font-weight: 300;
+    color: var(--rose-dark);
+    letter-spacing: 0.04em;
+    line-height: 1.2;
+    animation: fadeUp 1.2s ease forwards;
+    opacity: 0;
+    text-shadow: 0 2px 20px rgba(200,112,122,0.15);
+  }
+  .landing-title em {
+    font-style: italic;
+    color: var(--rose);
+  }
+
+  .subtitle-line {
+    font-size: 0.85rem;
+    letter-spacing: 0.25em;
+    color: var(--text-mid);
+    text-transform: uppercase;
+    animation: fadeUp 1.2s 0.3s ease forwards;
+    opacity: 0;
+  }
+
+  .open-btn {
+    margin-top: 1rem;
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.8rem;
+    padding: 1rem 2.8rem;
+    background: transparent;
+    border: 1.5px solid var(--rose);
+    border-radius: 50px;
+    color: var(--rose-dark);
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.95rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    cursor: pointer;
+    animation: fadeUp 1.2s 0.6s ease forwards;
+    opacity: 0;
+    transition: background 0.4s, color 0.4s, box-shadow 0.4s;
+    overflow: hidden;
+  }
+  .open-btn::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--rose);
+    border-radius: 50px;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.4s ease;
+    z-index: -1;
+  }
+  .open-btn:hover::before { transform: scaleX(1); }
+  .open-btn:hover { color: #fff; box-shadow: 0 8px 30px rgba(200,112,122,0.35); }
+
+  .heart-icon { font-size: 1.1rem; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ─── LETTER PAGE ─── */
+  #letter {
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    overflow-y: auto;
+    padding: 4rem 1.5rem 3rem;
+    gap: 0;
+  }
+
+  .letter-wrap {
+    max-width: 680px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+  }
+
+  .letter-header {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+  }
+
+  .letter-header-tag {
+    font-size: 0.75rem;
+    letter-spacing: 0.3em;
+    color: var(--gold);
+    text-transform: uppercase;
+  }
+
+  .letter-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2rem, 5vw, 3.2rem);
+    font-weight: 300;
+    font-style: italic;
+    color: var(--rose-dark);
+    line-height: 1.2;
+  }
+
+  .divider {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin: 0 auto;
+    width: fit-content;
+  }
+  .divider-line {
+    width: 60px;
+    height: 1px;
+    background: linear-gradient(to right, transparent, var(--rose));
+  }
+  .divider-line.rev {
+    background: linear-gradient(to left, transparent, var(--rose));
+  }
+  .divider-heart { color: var(--rose); font-size: 0.9rem; }
+
+  /* ─── TEXT CARD ─── */
+  .text-card {
+    background: #fff;
+    border-radius: 20px;
+    padding: 2.5rem 2.8rem;
+    box-shadow: 0 8px 50px rgba(200,112,122,0.1);
+    border: 1px solid rgba(200,112,122,0.15);
+    position: relative;
+    overflow: hidden;
+  }
+  .text-card::before {
+    content: '\201C';
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 8rem;
+    color: var(--rose-light);
+    position: absolute;
+    top: -1.5rem;
+    left: 1.2rem;
+    line-height: 1;
+    pointer-events: none;
+  }
+
+  .letter-text {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(1.05rem, 2.2vw, 1.25rem);
+    line-height: 1.95;
+    color: var(--text-dark);
+    font-weight: 400;
+    position: relative;
+    z-index: 1;
+  }
+  .letter-text p { margin-bottom: 1.1em; }
+  .letter-text p:last-child { margin-bottom: 0; }
+
+  /* ─── TYPEWRITER ─── */
+  .letter-text p {
+    min-height: 1.95em;
+    visibility: hidden;
+  }
+  .letter-text p.tw-active,
+  .letter-text p.tw-done {
+    visibility: visible;
+  }
+
+  .letter-text p.tw-active::after {
+    content: '|';
+    color: var(--rose);
+    animation: blink 0.6s step-end infinite;
+    margin-left: 1px;
+  }
+  @keyframes blink {
+    0%, 100% { opacity: 1; }
+    50%       { opacity: 0; }
+  }
+
+  .letter-sign {
+    visibility: hidden;
+  }
+  .letter-sign.tw-done {
+    visibility: visible;
+  }
+
+  .letter-sign-wrap {
+    text-align: right;
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 1.1rem;
+    color: var(--rose);
+    margin-top: 1.5rem;
+  }
+
+  /* ─── PHOTOS ─── */
+  .photos-section {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+  }
+
+  .photos-label {
+    text-align: center;
+    font-size: 0.75rem;
+    letter-spacing: 0.25em;
+    color: var(--gold);
+    text-transform: uppercase;
+  }
+
+  .photos-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
+
+  .photo-slot {
+    aspect-ratio: 4/5;
+    border-radius: 14px;
+    overflow: hidden;
+    border: 1px solid rgba(200,112,122,0.2);
+    background: linear-gradient(135deg, var(--rose-light) 0%, #fde8ea 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+  .photo-slot img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .photo-placeholder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--rose);
+    opacity: 0.5;
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    text-align: center;
+    padding: 1rem;
+  }
+  .photo-placeholder svg {
+    width: 32px; height: 32px;
+    stroke: var(--rose);
+    fill: none;
+    stroke-width: 1.5;
+  }
+
+  /* ─── FOOTER ─── */
+  .letter-footer {
+    text-align: center;
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 1rem;
+    color: var(--text-mid);
+    padding-bottom: 1rem;
+  }
+
+  /* ─── MUSIC NOTE ─── */
+  .music-note {
+    position: fixed;
+    bottom: 1.5rem;
+    right: 1.5rem;
+    z-index: 100;
+    background: #fff;
+    border: 1px solid rgba(200,112,122,0.3);
+    border-radius: 50%;
+    width: 44px; height: 44px;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 4px 20px rgba(200,112,122,0.2);
+    transition: transform 0.2s;
+    color: var(--rose);
+    font-size: 1.1rem;
+    display: none;
+  }
+  .music-note:hover { transform: scale(1.1); }
+  .music-note.playing::after {
+    content: '';
+    position: absolute;
+    inset: -4px;
+    border-radius: 50%;
+    border: 1.5px solid var(--rose-light);
+    animation: pulse 1.5s ease infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.2); opacity: 0; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Falling petals -->
+<div class="petals-bg" id="petalsContainer"></div>
+
+<!-- Audio -->
+<audio id="bgMusic" loop>
+  <!-- Добавь сюда src="путь_к_музыке.mp3" -->
+  <source src="./gera amen - Солнце встало.mp3" type="audio/mpeg">
+</audio>
+
+<!-- ── PAGE 1: Landing ── -->
+<div class="page" id="landing">
+  <p class="subtitle-line">Это для тебя</p>
+  <h1 class="landing-title">Элиза,<br><em>это для тебя</em> ♡</h1>
+  <button class="open-btn" id="openBtn">
+    <span class="heart-icon">♡</span>
+    Открыть
+  </button>
+</div>
+
+<!-- ── PAGE 2: Letter ── -->
+<div class="page hidden" id="letter">
+  <div class="letter-wrap">
+
+    <div class="letter-header">
+      <span class="letter-header-tag">С теплом, для тебя</span>
+      <h2 class="letter-title">Дорогая Элиза</h2>
+      <div class="divider">
+        <div class="divider-line"></div>
+        <span class="divider-heart">♡</span>
+        <div class="divider-line rev"></div>
+      </div>
+    </div>
+
+    <div class="text-card">
+      <div class="letter-text">
+        <p>Мы знакомы не так давно — и всё же мне кажется, что я знаю тебя целую вечность.</p>
+        <p>Я никогда — и это слово я произношу очень серьёзно — никогда так не привязывался ни к кому. Знаешь, я приходил на работу просто так. Даже после увольнения. Просто чтобы видеть тебя — как ты варишь самый лучший кофе в мире, погружённая в своё дело, не замечая меня. В те моменты ты была просто собой. И именно это меня и покорило.</p>
+        <p>Я очень благодарен общим друзьям — и футболу — за то, что они стали причиной нашего первого разговора. Это маленькое совпадение изменило многое.</p>
+        <p>Ты сказала, что нам нужно узнать друг друга лучше. Я рад этому больше, чем умею выразить словами.</p>
+        <p>Пусть ты всегда сияешь так же, как сияешь каждый день — своей тёплой, неповторимой улыбкой.</p>
+      </div>
+      <div class="letter-sign-wrap"><span class="letter-sign">С нежностью ♡</span></div>
+    </div>
+
+    <!-- Photos -->
+    <div class="photos-section"><p class="photos-label">Наши моменты</p>
+        <div class="photos-grid">
+            <div class="photo-slot"><img src="./image1.png" alt=""></div>
+            <div class="photo-slot"><img src="./image2.png" alt=""></div>
+            <div class="photo-slot"><img src="./image3.png" alt=""></div>
+            <div class="photo-slot"><img src="./image4.png" alt=""></div>
+        </div>
+    </div>
+
+    <div class="letter-footer">
+      Ты особенная. Не забывай об этом ♡
+    </div>
+
+  </div>
+</div>
+
+<!-- Music toggle -->
+<button class="music-note" id="musicBtn" title="Музыка">♪</button>
+
+<script>
+  // ─── Petals ───
+  const container = document.getElementById('petalsContainer');
+  for (let i = 0; i < 22; i++) {
+    const p = document.createElement('div');
+    p.className = 'petal';
+    p.style.left = Math.random() * 100 + '%';
+    p.style.animationDuration = (8 + Math.random() * 10) + 's';
+    p.style.animationDelay = (Math.random() * 12) + 's';
+    p.style.width = (8 + Math.random() * 10) + 'px';
+    p.style.height = (12 + Math.random() * 14) + 'px';
+    p.style.opacity = 0;
+    const hue = 340 + Math.random() * 20;
+    p.style.background = `hsl(${hue}, 65%, ${82 + Math.random()*10}%)`;
+    container.appendChild(p);
+  }
+
+  // ─── Open button ───
+  const openBtn = document.getElementById('openBtn');
+  const landing  = document.getElementById('landing');
+  const letter   = document.getElementById('letter');
+  const music    = document.getElementById('bgMusic');
+  const musicBtn = document.getElementById('musicBtn');
+
+  openBtn.addEventListener('click', () => {
+    landing.classList.add('hidden');
+    letter.classList.remove('hidden');
+    musicBtn.style.display = 'flex';
+
+    music.volume = 0.55;
+    music.play().then(() => {
+      musicBtn.classList.add('playing');
+    }).catch(() => {});
+
+    // ─── Typewriter engine ───
+    // Each char typed at ~42ms ± 18ms random (feels like a real machine)
+    const SPEED_BASE = 42;
+    const SPEED_JITTER = 18;
+    const PAUSE_AFTER_PARA = 480; // pause before next paragraph starts
+
+    const paragraphs = Array.from(document.querySelectorAll('.letter-text p'));
+    const sign = document.querySelector('.letter-sign');
+
+    // Store original texts, clear elements
+    const texts = paragraphs.map(p => {
+      const t = p.textContent;
+      p.textContent = '';
+      return t;
+    });
+
+    function typeChar(el, text, charIndex, onDone) {
+      if (charIndex >= text.length) {
+        el.classList.remove('tw-active');
+        el.classList.add('tw-done');
+        onDone();
+        return;
+      }
+      el.textContent = text.slice(0, charIndex + 1);
+      const delay = SPEED_BASE + Math.random() * SPEED_JITTER * 2 - SPEED_JITTER;
+      setTimeout(() => typeChar(el, text, charIndex + 1, onDone), delay);
+    }
+
+    function typeParagraph(index) {
+      if (index >= paragraphs.length) {
+        // All paragraphs done — show sign
+        setTimeout(() => sign.classList.add('tw-done'), 300);
+        return;
+      }
+      const p = paragraphs[index];
+      p.classList.add('tw-active');
+      typeChar(p, texts[index], 0, () => {
+        setTimeout(() => typeParagraph(index + 1), PAUSE_AFTER_PARA);
+      });
+    }
+
+    // Start after letter page fade-in
+    setTimeout(() => typeParagraph(0), 700);
+  });
+
+  // ─── Music toggle ───
+  let isPlaying = true;
+  musicBtn.addEventListener('click', () => {
+    if (isPlaying) {
+      music.pause();
+      musicBtn.classList.remove('playing');
+      musicBtn.textContent = '♩';
+    } else {
+      music.play();
+      musicBtn.classList.add('playing');
+      musicBtn.textContent = '♪';
+    }
+    isPlaying = !isPlaying;
+  });
+</script>
+</body>
+</html>
